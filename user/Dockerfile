@@ -1,4 +1,5 @@
 FROM node:20.0.0
+# RUN useradd roboshop
 WORKDIR /opt/app
 COPY *.js .
 COPY *.json .
