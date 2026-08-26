@@ -20,10 +20,10 @@ services:
     volumes:
       - rabbitmq:/var/lib/rabbitmq
   mysql:
-    image: image:v1
+    image: mysql:v1
     container_name: mysql
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql  
   user:
     image: user:v1
     container_name: user
