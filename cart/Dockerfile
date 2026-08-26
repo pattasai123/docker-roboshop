@@ -1,10 +1,27 @@
-FROM node:20.0.0
+FROM node:20-alpine AS builder
 # RUN useradd roboshop
 WORKDIR /opt/app
 COPY *.js .
 COPY *.json .
 RUN npm install 
+
+FROM node:20-alpine
+WORKDIR /opt/app
+COPY --from=builder /opt/app/*.js ./
+COPY --from=builder /opt/app/*.json ./
+RUN npm install --omit=dev
 ENV REDIS_HOST="redis" \
 CATALOGUE_HOST="catalogue" \
 CATALOGUE_PORT="8080"
 CMD [ "node","server.js" ]
+
+# FROM node:20.0.0
+# # RUN useradd roboshop
+# WORKDIR /opt/app
+# COPY *.js .
+# COPY *.json .
+# RUN npm install 
+# ENV REDIS_HOST="redis" \
+# CATALOGUE_HOST="catalogue" \
+# CATALOGUE_PORT="8080"
+# CMD [ "node","server.js" ]
