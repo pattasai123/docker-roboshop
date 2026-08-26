@@ -34,7 +34,7 @@ services:
     image: cart:v1
     container_name: cart
     depends_on:
-      - cart
+      - redis
       - catalogue
     
   shipping:
