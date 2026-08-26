@@ -27,7 +27,7 @@ services:
   user:
     image: user:v1
     container_name: user
-    volumes:
+    depends_on:
       - redis
       - mongodb
   cart:
