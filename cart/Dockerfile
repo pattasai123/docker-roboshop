@@ -9,10 +9,12 @@ FROM node:20-alpine
 WORKDIR /opt/app
 COPY --from=builder /opt/app/*.js ./
 COPY --from=builder /opt/app/*.json ./
-RUN npm install --omit=dev
+RUN npm install --omit=dev && \
+    useradd -D roboshop
 ENV REDIS_HOST="redis" \
 CATALOGUE_HOST="catalogue" \
 CATALOGUE_PORT="8080"
+USER roboshop
 CMD [ "node","server.js" ]
 
 # FROM node:20.0.0
