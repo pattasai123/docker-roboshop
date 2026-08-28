@@ -1,104 +1,189 @@
 services:
-  mongodb:
-    build: 
-      context: ./mongodb
+  catalogue:
+    build:
+      context: ./catalogue
       dockerfile: Dockerfile
-    image: balaji1729/mongodb:v1
+    image: joindevops/catalogue:v1
+    container_name: catalogue
+    depends_on:
+    - mongodb
+  mongodb:
+    build: ./mongodb
+    image: joindevops/mongodb:v1
     container_name: mongodb
     volumes:
     - mongodb:/data/db
-  catalogue:
-    build: 
-      context: ./catalogue
-      dockerfile: Dockerfile
-    image: balaji1729/catalogue:v1
-    container_name: catalogue
-    depends_on:
-      - mongodb
   redis:
-    build: 
-      context: ./redis
-      dockerfile: Dockerfile
-    image: balaji1729/redis:v1
+    image: redis:7.0
     container_name: redis
     volumes:
     - redis:/data
-  rabbitmq:
-    build: 
-      context: ./rabbitmq
-      dockerfile: Dockerfile
-    image: balaji1729/rabbitmq:v1
-    container_name: rabbitmq
-    volumes:
-    - rabbitmq:/var/lib/rabbitmq
   mysql:
-    build: 
-      context: ./mysql
-      dockerfile: Dockerfile
-    image: balaji1729/mysql:v1
+    build: ./mysql
+    image: joindevops/mysql:v1
     container_name: mysql
     volumes:
-    - mysql:/var/lib/mysql  
+    - mysql:/var/lib/mysql
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    volumes: # -v rabbitmq:/var/lib/rabbitmq
+    - rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: roboshop
+      RABBITMQ_DEFAULT_PASS: roboshop123
   user:
-    build: 
-      context: ./user
-      dockerfile: Dockerfile
-    image: balaji1729/user:v1
+    build: ./user
+    image: joindevops/user:v1
     container_name: user
     depends_on:
-      - redis
-      - mongodb
+    - mongodb
+    - redis
   cart:
-    build: 
-      context: ./cart
-      dockerfile: Dockerfile
-    image: balaji1729/cart:v1
+    build: ./cart
+    image: joindevops/cart:v1
     container_name: cart
     depends_on:
-      - redis
-      - catalogue
-    
+    - redis
+    - catalogue
   shipping:
-    build: 
-      context: ./shipping
-      dockerfile: Dockerfile
-    image: balaji1729/shipping:v1
+    build: ./shipping
+    image: joindevops/shipping:v1
     container_name: shipping
     depends_on:
-      - cart
-      - mysql
+    - mysql
+    - cart
   payment:
-    build: 
-      context: ./payment
-      dockerfile: Dockerfile
-    image: balaji1729/payment:v1
+    build: ./payment
+    image: joindevops/payment:v1
     container_name: payment
     depends_on:
-      - cart
-      - user
-      - rabbitmq
+    - rabbitmq
+    - cart
+    - user
   frontend:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: balaji1729/frontend:v1
+    build: ./frontend
+    image: joindevops/frontend:v1
     container_name: frontend
     ports:
-      - 80:80
+    - "80:80"
     depends_on:
-      - user
-      - cart
-      - shipping
-      - payment
-
+    - catalogue
+    - user
+    - cart
+    - shipping
+    - payment
 networks:
   default:
     driver: bridge
     name: roboshop
     external: false # true if you have created network manually using docker network command
-
 volumes:
   mongodb: # docker volume create mongodb. /var/lib/docker/volumes
   redis:
   mysql:
   rabbitmq:
+# services:
+#   mongodb:
+#     build: 
+#       context: ./mongodb
+#       dockerfile: Dockerfile
+#     image: balaji1729/mongodb:v1
+#     container_name: mongodb
+#     volumes:
+#     - mongodb:/data/db
+#   catalogue:
+#     build: 
+#       context: ./catalogue
+#       dockerfile: Dockerfile
+#     image: balaji1729/catalogue:v1
+#     container_name: catalogue
+#     depends_on:
+#       - mongodb
+#   redis:
+#     build: 
+#       context: ./redis
+#       dockerfile: Dockerfile
+#     image: balaji1729/redis:v1
+#     container_name: redis
+#     volumes:
+#     - redis:/data
+#   rabbitmq:
+#     build: 
+#       context: ./rabbitmq
+#       dockerfile: Dockerfile
+#     image: balaji1729/rabbitmq:v1
+#     container_name: rabbitmq
+#     volumes:
+#     - rabbitmq:/var/lib/rabbitmq
+#   mysql:
+#     build: 
+#       context: ./mysql
+#       dockerfile: Dockerfile
+#     image: balaji1729/mysql:v1
+#     container_name: mysql
+#     volumes:
+#     - mysql:/var/lib/mysql  
+#   user:
+#     build: 
+#       context: ./user
+#       dockerfile: Dockerfile
+#     image: balaji1729/user:v1
+#     container_name: user
+#     depends_on:
+#       - redis
+#       - mongodb
+#   cart:
+#     build: 
+#       context: ./cart
+#       dockerfile: Dockerfile
+#     image: balaji1729/cart:v1
+#     container_name: cart
+#     depends_on:
+#       - redis
+#       - catalogue
+    
+#   shipping:
+#     build: 
+#       context: ./shipping
+#       dockerfile: Dockerfile
+#     image: balaji1729/shipping:v1
+#     container_name: shipping
+#     depends_on:
+#       - cart
+#       - mysql
+#   payment:
+#     build: 
+#       context: ./payment
+#       dockerfile: Dockerfile
+#     image: balaji1729/payment:v1
+#     container_name: payment
+#     depends_on:
+#       - cart
+#       - user
+#       - rabbitmq
+#   frontend:
+#     build: 
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     image: balaji1729/frontend:v1
+#     container_name: frontend
+#     ports:
+#       - 80:80
+#     depends_on:
+#       - user
+#       - cart
+#       - shipping
+#       - payment
+
+# networks:
+#   default:
+#     driver: bridge
+#     name: roboshop
+#     external: false # true if you have created network manually using docker network command
+
+# volumes:
+#   mongodb: # docker volume create mongodb. /var/lib/docker/volumes
+#   redis:
+#   mysql:
+#   rabbitmq:
