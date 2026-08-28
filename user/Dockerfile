@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 
 WORKDIR /opt/app
 
@@ -7,7 +7,7 @@ RUN npm install
 
 COPY *.js ./
 
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /opt/app
 
@@ -15,7 +15,7 @@ COPY --from=builder /opt/app/node_modules ./node_modules
 COPY --from=builder /opt/app/*.json ./
 COPY --from=builder /opt/app/*.js ./
 
-RUN adduser -D roboshop
+RUN useradd -m roboshop
 
 ENV MONGO=true \
     REDIS_URL="redis://redis:6379" \
