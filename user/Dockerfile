@@ -7,7 +7,7 @@ RUN npm install
 FROM node:20.19.5-alpine3.21
 
 WORKDIR /opt/app
-RUN addgroup -S roboshop && adduser -S roboshop -G roboshop \
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
     chown -R roboshop:roboshop /opt/server
 COPY --from=builder --chown=roboshop:roboshop /opt/app /opt/app
 
