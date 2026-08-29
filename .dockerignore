@@ -1,0 +1,80 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment / secrets
+.env
+.env.*
+*.env
+
+# Dependencies
+node_modules/
+vendor/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build / compiled files
+dist/
+build/
+target/
+out/
+bin/
+obj/
+
+# Test / coverage
+coverage/
+.nyc_output/
+.pytest_cache/
+.mypy_cache/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Cache
+.cache/
+*.cache
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+docker-compose*.yaml
+.docker/
+
+# Documentation
+README*
+CHANGELOG*
+LICENSE*
+
+# Backups
+*.bak
+*.backup
+*~
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Certificates / keys
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
