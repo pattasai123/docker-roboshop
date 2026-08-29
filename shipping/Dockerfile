@@ -16,4 +16,4 @@ ENV CART_ENDPOINT=cart:8080 \
     DB_HOST=mysql
 COPY --from=builder --chown=roboshop:roboshop /opt/app/shipping.jar shipping.jar
 USER roboshop
-CMD ["java", "-jar", "shipping.jar"]
+CMD ["sh", "-c", "sleep 30 && java -jar shipping.jar"]
