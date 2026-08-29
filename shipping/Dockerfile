@@ -12,8 +12,8 @@ RUN mvn clean package -DskipTests && \
 FROM eclipse-temurin:17-jre-alpine
 RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
 WORKDIR /opt/app
-ENV CART_ENDPOINT=cart:8080 \
-    DB_HOST=mysql
+ENV CART_ENDPOINT="cart:8080" \
+    DB_HOST="mysql" 
 COPY --from=builder --chown=roboshop:roboshop /opt/app/shipping.jar shipping.jar
 USER roboshop
 CMD ["sh", "-c", "sleep 30 && java -jar shipping.jar"]
