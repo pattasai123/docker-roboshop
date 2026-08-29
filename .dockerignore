@@ -78,5 +78,3 @@ LICENSE*
 *.crt
 *.p12
 *.pfx
-
-echo "mysql/db/master-data.sql" >> .gitignore
